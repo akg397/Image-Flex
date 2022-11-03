@@ -8,7 +8,7 @@ const GOOD_JPG_EXTENSION = 'jpeg'
 
 const UriToS3Key = event => {
   const { request, request: { headers, querystring, uri } } = event.Records[0].cf
-  const { h: height = '', w: width } = parse(querystring)
+  const { h: height = '', w: width, q: q } = parse(querystring)
 
   if (!width || isNaN(parseInt(width, 10))) return request
 
