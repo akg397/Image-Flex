@@ -27,13 +27,14 @@ const GetOrCreateImage = async event => {
 
   if (!['403', '404'].includes(status)) return response
 
-  let { nextExtension, height, sourceImage, width } = parse(querystring)
+  let { nextExtension, height, sourceImage, width, q } = parse(querystring)
   const [bucket] = domainName.match(/.+(?=\.s3\.amazonaws\.com)/i)
   const contentType = 'image/' + nextExtension
   const key = uri.replace(/^\//, '')
   const sourceKey = sourceImage.replace(/^\//, '')
 
   height = parseInt(height, 10) || null
+  q = parseInt(q, 10) || 95
   width = parseInt(width, 10)
 
   if (!width) return response
@@ -52,7 +53,7 @@ const GetOrCreateImage = async event => {
             /**
              * @see https://sharp.pixelplumbing.com/api-output#webp for a list of options.
              */
-            quality: 95
+            quality: q
           })
           .toBuffer()
           .catch(error => {
